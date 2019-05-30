@@ -1,6 +1,6 @@
 package com.jyx.vip.funcation.impl;
 
-import com.jyx.vip.common.ThisSystemUtils;
+import com.jyx.vip.common.AssertThrowUtils;
 import com.jyx.vip.dao.UserDao;
 import com.jyx.vip.entity.UserEntity;
 import com.jyx.vip.funcation.UserFuncation;
@@ -21,16 +21,16 @@ public class UserFuncationImpl implements UserFuncation {
     @Override
     public UserEntity login(String account, String password) throws Exception {
 
-        account = ThisSystemUtils.throwIsNull("账户不能为空",account);
-        password = ThisSystemUtils.throwIsNull("密码不能为空",password);
+        account = AssertThrowUtils.throwIsNull("账户不能为空",account);
+        password = AssertThrowUtils.throwIsNull("密码不能为空",password);
 
-        UserEntity userEntity = userDao.selectByAccount(account);
+        UserEntity userEntity = userDao.select("account",account);
         if (userEntity ==null){
-            ThisSystemUtils.throwSystemException("账户不存在");
+            AssertThrowUtils.throwSystemException("账户不存在");
         }
 
         if (!password.equals(userEntity.getPassword())) {
-            ThisSystemUtils.throwSystemException("密码错误");
+            AssertThrowUtils.throwSystemException("密码错误");
         }
         return userEntity;
     }
